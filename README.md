@@ -1,11 +1,14 @@
 # Dokumentacja dla eksperta od oprogramowania PZSP2 – Zespół 1 – teams
 
 ## Repozytorium kodu z dostępem online
+
 Utworzona została organizacja w serwisie GitHub, w skład której wchodzą 2 repozytoria:
+
 - biblioteka ułatwiająca komunikację z API MS Teams [lib](https://github.com/pzsp-teams/lib)
 - aplikacja terminalowa prezentująca użycie biblioteki [cli](https://github.com/pzsp-teams/cli)
 
-## Pipeline CI/CD 
+## Pipeline CI/CD
+
 - **Lint** - statyczna analiza kodu przy pomocy golangci-lint
 - **Go Mod Tidy** - sprawdzenie, czy z plikach obsługujących pakiety nie ma nadmiarowych dependencji
 - **Test** - kiedy przejdą poprzednie sekcje, uruchamiane są testy jednostkowe
@@ -14,15 +17,19 @@ Utworzona została organizacja w serwisie GitHub, w skład której wchodzą 2 re
 ![CI pipeline](./CI.png)
 
 ## Narzędzia formatowania i analizy statycznej
+
 Używane narzędzie to **golangci-lint**. Jego konfiguracja znajduje się w pliku *.golangci.yml*. CI uruchamia wiele różnych, zewnętrznych linterów (np. gocritic, gocyclo etc.) i na podstawie ich właściwości ocenia poprawności kodu. Do formatowania wykorzystane zostały wykorzystane narzędzia domyślna języka go - **gofmt** i **goimports**.
 
 ## Metodyka tworzenia kodu
-Na githubie tworzone są issues, które są przydzielane jako zadania do konkretnych osób. Do każdego feature tworzony jest osobny branch. Po wstępnym zakończeniu pracy nad funkcjonalnością tworzony jest Pull Request. Aby sfinalizować Pull Request wymagane zaakceptowanie przez przynajmniej jednego innego maintainera. Jeśli reviewer negatywnie oceni jakość powstałego kodu, zostawia komentarze, do których musi odnieść się autor kodu. 
+
+Na githubie tworzone są issues, które są przydzielane jako zadania do konkretnych osób. Do każdego feature tworzony jest osobny branch. Po wstępnym zakończeniu pracy nad funkcjonalnością tworzony jest Pull Request. Aby sfinalizować Pull Request wymagane zaakceptowanie przez przynajmniej jednego innego maintainera. Jeśli reviewer negatywnie oceni jakość powstałego kodu, zostawia komentarze, do których musi odnieść się autor kodu.
 
 ## Wybór języka
+
 Do wykonania projektu został wybrany język **Go**. Go posiada bardzo bogaty ekosystem do aplikacji typu CLI np. *cobra*, *bubbletea*. W języku tym można również korzystać gotowych rozwiązań Microsoftu takich jak MSAL (biblioteka do autoryzacji) oraz MSGraphSDK. System do zarządzania dependencjami jest bardzo dobry i lepszy niż w językach typu Python. Innym kryterium wyboru była chęć nauczenia się nowego języka, który ma dobrą reputację.
 
 ## Propozycje testów akceptacyjnych
+
 ### Test Akceptacyjny: Wysyłanie wiadomości na kanały Teams
 
 **Scenariusz:** Wysłanie spersonalizowanej wiadomości na wybrane kanały zespołu
@@ -119,10 +126,9 @@ Wysłano: 3/3
 
 #### Kryteria akceptacji
 
-- System podstawia różne wartości zmiennych dla każdego kanału
-- Każdy kanał otrzymuje spersonalizowaną wiadomość
-- System wysyła wiadomości do wszystkich kanałów z listy
-- Komunikat końcowy potwierdza wysłanie na wszystkie kanały
+- System podstawia różne wartości zmiennych w wiadomościach dla każdego kanału
+- Każdy kanał wymieniony w pliku `variables.json` otrzymuje spersonalizowaną wiadomość
+- Komunikat końcowy informuje o liczbie pomyślnie wysłanych wiadomości
 
 ### Test Akceptacyjny: Pobieranie nieodczytanych wiadomości Teams
 
@@ -135,8 +141,9 @@ Wysłano: 3/3
 ##### Krok 1: Wykonanie komendy
 
 **Akcja użytkownika:**
+
 ```bash
-teams-automation fetch
+teams-automation unread
 ```
 
 ##### Krok 2: Przetwarzanie przez system
@@ -144,11 +151,12 @@ teams-automation fetch
 **Akcja systemu:**
 
 - System pobiera listę nieodczytanych wiadomości użytkownika
-- System grupuje wiadomości według zespołów i kanałów
+- System wyświetla listę nieodczytanych wiadomości
 
 ##### Krok 3: Otrzymanie potwierdzenia
 
 **Wyświetlony wynik:**
+
 ```
 Nieodczytane wiadomości:
 
@@ -171,7 +179,7 @@ Pobrano: 2 nieodczytane wiadomości
 
 - System pobiera wszystkie nieodczytane wiadomości użytkownika
 - System wyświetla szczegóły każdej wiadomości
-- System wyświetla treść wiadomości w czytelnej formie
+- System wyświetla treść wiadomości w formie
 - Komunikat końcowy potwierdza poprawne pobranie listy wiadomości
 
 ### Test Akceptacyjny: Automatyczne tworzenie kanałów dla grup projektowych
