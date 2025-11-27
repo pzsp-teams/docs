@@ -11,6 +11,8 @@ Utworzona została organizacja w serwisie GitHub, w skład której wchodzą 2 re
 - **Test** - kiedy przejdą poprzednie sekcje, uruchamiane są testy jednostkowe
 - **Vulnerability Check** - analiza pod kątem znanych podatności
 
+![CI pipeline](./CI.png)
+
 ## Narzędzia formatowania i analizy statycznej
 Używane narzędzie to **golangci-lint**. Jego konfiguracja znajduje się w pliku *.golangci.yml*. CI uruchamia wiele różnych, zewnętrznych linterów (np. gocritic, gocyclo etc.) i na podstawie ich właściwości ocenia poprawności kodu. Do formatowania wykorzystane zostały wykorzystane narzędzia domyślna języka go - **gofmt** i **goimports**.
 
