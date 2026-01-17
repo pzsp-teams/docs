@@ -2,56 +2,80 @@
 
 ## Repozytorium kodu z dostępem online
 
-Utworzona została organizacja w serwisie GitHub, w skład której wchodzą 3 repozytoria:
+Utworzona została organizacja w serwisie GitHub, w skład której wchodzą 3
+repozytoria:
 
-- biblioteka ułatwiająca komunikację z API MS Teams [lib](https://github.com/pzsp-teams/lib)
-- binding biblioteki w pythonie [lib-python](https://github.com/pzsp-teams/lib-python)
-- aplikacja terminalowa prezentująca użycie biblioteki [cli](https://github.com/pzsp-teams/cli)
+- biblioteka ułatwiająca komunikację z API MS Teams
+  [lib](https://github.com/pzsp-teams/lib)
+- binding biblioteki w pythonie
+  [lib-python](https://github.com/pzsp-teams/lib-python)
+- aplikacja terminalowa prezentująca użycie biblioteki
+  [cli](https://github.com/pzsp-teams/cli)
 
 ## Pipeline'y CI/CD
 
 **CI na lib**
+
 - **Lint** - statyczna analiza kodu przy pomocy golangci-lint
-- **Go Mod Tidy** - sprawdzenie, czy z plikach obsługujących pakiety nie ma nadmiarowych dependencji
+- **Go Mod Tidy** - sprawdzenie, czy z plikach obsługujących pakiety nie ma
+  nadmiarowych dependencji
 - **Test** - kiedy przejdą poprzednie sekcje, uruchamiane są testy jednostkowe
 - **Vulnerability Check** - analiza pod kątem znanych podatności
 
-Używane narzędzie to **golangci-lint**. Jego konfiguracja znajduje się w pliku *.golangci.yml*. CI uruchamia wiele różnych, zewnętrznych linterów (np. gocritic, gocyclo etc.) i na podstawie ich właściwości ocenia poprawności kodu. Do formatowania wykorzystane zostały wykorzystane narzędzia domyślna języka go - **gofmt** i **goimports**.
+Używane narzędzie to **golangci-lint**. Jego konfiguracja znajduje się w pliku
+*.golangci.yml*. CI uruchamia wiele różnych, zewnętrznych linterów (np.
+gocritic, gocyclo etc.) i na podstawie ich właściwości ocenia poprawności kodu.
+Do formatowania wykorzystane zostały wykorzystane narzędzia domyślna języka go -
+**gofmt** i **goimports**.
 
 ![CI pipeline](./CI.png)
 
 **Generowanie i publikowanie dokumentacji na lib oraz lib-python**
+
 - **Build Docs** - wygenerowanie dokumentacji przez MkDocs
 - **Deploy to GitHub Pages** - deployment strony z dokumentacją
 
 ![Docs pipeline](./docs.png)
 
 **Testy integracyjne w Pythonie**
+
 - **Build fake client** - kompiluje bridge Go z zamockowanym API Microsoft Teams
 - **Run Integration Tests** - odpala testy integracyjne
 - **Build real client** - kompilacja Go z prawdziwym API Microsoft Teams
 
 (te stage'e są odpalane po pushu na main w lib-go)
-- **Bump Version on Main** - aktualizacja wersji biblioteki w Go z której korzysta binding pythona
+
+- **Bump Version on Main** - aktualizacja wersji biblioteki w Go z której
+  korzysta binding pythona
 - **Update release branch** - aktualizacja brancha python-release
 
-
-
 ![Integration tests](./integration_tests.png)
+
 ## Narzędzia formatowania i analizy statycznej
 
 **Publikacja w PyPi**
+
 - **Upload release to PyPi** - wprowadzenie nowej wersji do PyPi
 
 ![Publish](./publish.png)
 
 ## Metodyka tworzenia kodu
 
-Na githubie tworzone są issues, które są przydzielane jako zadania do konkretnych osób. Do każdego feature tworzony jest osobny branch. Po wstępnym zakończeniu pracy nad funkcjonalnością tworzony jest Pull Request. Aby sfinalizować Pull Request wymagane zaakceptowanie przez przynajmniej jednego innego maintainera. Jeśli reviewer negatywnie oceni jakość powstałego kodu, zostawia komentarze, do których musi odnieść się autor kodu.
+Na githubie tworzone są issues, które są przydzielane jako zadania do
+konkretnych osób. Do każdego feature tworzony jest osobny branch. Po wstępnym
+zakończeniu pracy nad funkcjonalnością tworzony jest Pull Request. Aby
+sfinalizować Pull Request wymagane zaakceptowanie przez przynajmniej jednego
+innego maintainera. Jeśli reviewer negatywnie oceni jakość powstałego kodu,
+zostawia komentarze, do których musi odnieść się autor kodu.
 
 ## Wybór języka
 
-Do wykonania projektu został wybrany język **Go**. Go posiada bardzo bogaty ekosystem do aplikacji typu CLI np. *cobra*, *bubbletea*. W języku tym można również korzystać gotowych rozwiązań Microsoftu takich jak MSAL (biblioteka do autoryzacji) oraz MSGraphSDK. System do zarządzania dependencjami jest bardzo dobry i lepszy niż w językach typu Python. Innym kryterium wyboru była chęć nauczenia się nowego języka, który ma dobrą reputację.
+Do wykonania projektu został wybrany język **Go**. Go posiada bardzo bogaty
+ekosystem do aplikacji typu CLI np. *cobra*, *bubbletea*. W języku tym można
+również korzystać gotowych rozwiązań Microsoftu takich jak MSAL (biblioteka do
+autoryzacji) oraz MSGraphSDK. System do zarządzania dependencjami jest bardzo
+dobry i lepszy niż w językach typu Python. Innym kryterium wyboru była chęć
+nauczenia się nowego języka, który ma dobrą reputację.
 
 ## Propozycje testów akceptacyjnych
 
@@ -59,23 +83,21 @@ Do wykonania projektu został wybrany język **Go**. Go posiada bardzo bogaty ek
 
 **Scenariusz:** Wysłanie spersonalizowanej wiadomości na wybrane kanały zespołu
 
----
+______________________________________________________________________
 
 #### Pliki testowe
-
-# TODO: Wkleić rzeczywistą treść PLIKU
 
 **Plik: message.txt**
 
 ```
-Drogi ${zespol},
+@@channel@@,
 
-Przypominam o spotkaniu ${data} o godzinie ${godzina}.
+Przypominam o spotkaniu {{ .data }} o godzinie {{ .godzina }}.
 
-Temat spotkania: ${temat}
+Temat spotkania: {{ .temat }}
 
 Prosimy o przygotowanie:
-${zadanie}
+{{ .zadanie }}
 
 Pozdrawiam,
 Kierownik Projektu
@@ -85,15 +107,13 @@ Kierownik Projektu
 
 ```json
 {
-  "Ogólny": {
-    "zespol": "Zespole",
+  "General": {
     "data": "1 grudnia 2025",
     "godzina": "10:00",
     "temat": "Spotkanie ogólne Q4",
     "zadanie": "Raport z postępów"
   },
   "Projekty": {
-    "zespol": "Zespole projektowy",
     "data": "1 grudnia 2025",
     "godzina": "11:00",
     "temat": "Review projektów",
@@ -109,7 +129,7 @@ Kierownik Projektu
 }
 ```
 
----
+______________________________________________________________________
 
 #### Kroki testowe
 
@@ -117,7 +137,8 @@ Kierownik Projektu
 
 **Akcja użytkownika:**
 
-- Użytkownik tworzy plik `message.txt` z szablonem wiadomości zawierającym placeholdery
+- Użytkownik tworzy plik `message.txt` z szablonem wiadomości zawierającym
+  placeholdery
 - Użytkownik tworzy plik `variables.json` z wartościami dla każdego kanału
 
 ##### Krok 2: Wykonanie komendy
@@ -125,7 +146,7 @@ Kierownik Projektu
 **Akcja użytkownika:**
 
 ```bash
-teams-automation send --team "Marketing Team" --template message.txt --variables variables.json
+teams-cli channels messages send --template message.txt --data variables.json --team MyTeam
 ```
 
 ##### Krok 3: Przetwarzanie przez system
@@ -142,39 +163,32 @@ teams-automation send --team "Marketing Team" --template message.txt --variables
 **Wyświetlony wynik:**
 
 ```
-Zespół: Marketing Team
-Szablon: message.txt
-Kanały: 3
-
-Wysłano: 3/3
+Send complete - successful: 3, total: 3
 ```
 
----
+______________________________________________________________________
 
 #### Kryteria akceptacji
 
 - System podstawia różne wartości zmiennych w wiadomościach dla każdego kanału
-- Każdy kanał wymieniony w pliku `variables.json` otrzymuje spersonalizowaną wiadomość
+- Każdy kanał wymieniony w pliku `variables.json` otrzymuje spersonalizowaną
+  wiadomość
 - Komunikat końcowy informuje o liczbie pomyślnie wysłanych wiadomości
 
-WYNIK:
-# TODO: WKLEIĆ OUTPUT
-
-### Test Akceptacyjny: Pobieranie nieodczytanych wiadomości Teams
+### Test Akceptacyjny: Pobieranie wiadomości Teams z zakresu czasowego
 
 **Scenariusz:** Pobranie wiadomości użytkownika z podanego okresu czasu
 
----
+______________________________________________________________________
 
 #### Kroki testowe
 
 ##### Krok 1: Wykonanie komendy
-# TODO Wkleić prawdziwą komende
 
 **Akcja użytkownika:**
 
 ```bash
-teams-automation unread
+teams-cli channels messages get
 ```
 
 ##### Krok 2: Przetwarzanie przez system
@@ -189,22 +203,26 @@ teams-automation unread
 **Wyświetlony wynik:**
 
 ```
-Wiadomości:
+FROM:    Kamil
+TEAM:    pzsp2z1teams
+CHANNEL: test-general2
+DATE:    17 Jan 26 14:48 UTC
 
-  Marketing Team > Ogólny
-  Od: Jan Kowalski
-  Data: 2025-11-27 09:30
-  Treść: Przypominam o spotkaniu dzisiaj o 14:00. Proszę o przygotowanie raportów.
-  
-  Development Team > Projekty
-  Od: Anna Nowak
-  Data: 2025-11-27 10:15
-  Treść: Merge request #234 czeka na review. Czy możesz sprawdzić?
+Wiadomość testowa na test-general-2
 
-Pobrano: 2 wiadomości z podanego okresu
+--------------------------------------------------
+
+FROM:    Kamil
+TEAM:    pzsp2z1teams
+CHANNEL: General
+DATE:    17 Jan 26 14:47 UTC
+
+Wiadomość testowa
+
+--------------------------------------------------
 ```
 
----
+______________________________________________________________________
 
 #### Kryteria akceptacji
 
@@ -213,52 +231,39 @@ Pobrano: 2 wiadomości z podanego okresu
 - System wyświetla treść wiadomości w formie
 - Komunikat końcowy potwierdza poprawne pobranie listy wiadomości
 
-# TODO: WKLEIĆ OUTPUT
-
 ### Test Akceptacyjny: Automatyczne tworzenie kanałów dla grup projektowych
 
-**Scenariusz:** Automatyczne generowanie numerowanych kanałów i przypisywanie do nich zdefiniowanych grup użytkowników
+**Scenariusz:** Automatyczne generowanie numerowanych kanałów i przypisywanie do
+nich zdefiniowanych grup użytkowników
 
----
+______________________________________________________________________
 
 #### Pliki testowe
-# TODO WKLEIĆ rzeczywisty plik
 
 **Plik: groups_config.json**
 
 ```json
-[
-  {
-    "id": 1,
+{
+  "general2": {
+    "owners": [
+      "kmarsza@pzsp2z1teams.onmicrosoft.com"
+    ],
     "members": [
-      "jan.kowalski@firma.com",
-      "anna.nowak@firma.com",
-      "piotr.wisniewski@firma.com",
-      "maria.wojcik@firma.com"
+      "ddsouza@pzsp2z1teams.onmicrosoft.com"
     ]
   },
-  {
-    "id": 2,
+  "random": {
+    "owners": [
+      "msuski@pzsp2z1teams.onmicrosoft.com"
+    ],
     "members": [
-      "krzysztof.krawczyk@firma.com",
-      "agnieszka.kaminska@firma.com",
-      "tomasz.lewandowski@firma.com",
-      "ewa.zielinska@firma.com"
-    ]
-  },
-  {
-    "id": 3,
-    "members": [
-      "marcin.szymanski@firma.com",
-      "monika.wozniak@firma.com",
-      "adam.dabrowski@firma.com",
-      "natalia.kozlowska@firma.com"
+      "kmarsza@pzsp2z1teams.onmicrosoft.com"
     ]
   }
-]
+}
 ```
 
----
+______________________________________________________________________
 
 #### Kroki testowe
 
@@ -267,14 +272,15 @@ Pobrano: 2 wiadomości z podanego okresu
 **Akcja użytkownika:**
 
 - Użytkownik tworzy plik `groups_config.json` definiujący listę obiektów (grup)
-- Każdy obiekt zawiera listę adresów e-mail użytkowników Teams, którzy mają znaleźć się w jednej grupie
+- Każdy obiekt zawiera listę adresów e-mail użytkowników Teams, którzy mają
+  znaleźć się w jednej grupie
 
 ##### Krok 2: Wykonanie komendy
 
 **Akcja użytkownika:**
 
 ```bash
-teams-automation create-groups --team "Hackathon 2025" --config groups_config.json --base-name "Zespół Projektowy"
+teams-cli channels create --data groups_config.json --team Team
 ```
 
 ##### Krok 3: Przetwarzanie przez system
@@ -282,38 +288,31 @@ teams-automation create-groups --team "Hackathon 2025" --config groups_config.js
 **Akcja systemu:**
 
 - System odczytuje konfigurację z pliku `groups_config.json`
-- System generuje nazwę kanału łącząc podaną nazwę bazową (--base-name) z kolejnym numerem (np. "Zespół Projektowy 1")
+- System generuje nazwę kanału łącząc podaną nazwę bazową (--base-name) z
+  kolejnym numerem (np. "Zespół Projektowy 1")
 - System tworzy nowy kanał dla każdej grupy zdefiniowanej w pliku
-- System dodaje użytkowników z listy members do odpowiadającego im, nowo utworzonego kanału
+- System dodaje użytkowników z listy members do odpowiadającego im, nowo
+  utworzonego kanału
 
 ##### Krok 4: Otrzymanie potwierdzenia
 
 **Wyświetlony wynik:**
 
 ```
-Zespół docelowy: Hackathon 2025
-Nazwa bazowa: "Zespół Projektowy"
-Zdefiniowane grupy: 3
-
-[OK] Utworzono kanał: "Zespół Projektowy 1"
-     Dodano członków: 4
-
-[OK] Utworzono kanał: "Zespół Projektowy 2"
-     Dodano członków: 4
-
-[OK] Utworzono kanał: "Zespół Projektowy 3"
-     Dodano członków: 4
-
-Status: Operacja zakończona pomyślnie
+Created - channel: general2
+Members: ddsouza@pzsp2z1teams.onmicrosoft.com
+Owners: kmarsza@pzsp2z1teams.onmicrosoft.com
+Created - channel: random
+Members: kmarsza@pzsp2z1teams.onmicrosoft.com
+Owners: msuski@pzsp2z1teams.onmicrosoft.com
+Channel creation completed - successful: 2, total: 2
 ```
 
----
+______________________________________________________________________
 
 #### Kryteria akceptacji
 
-- System automatycznie numeruje kanały dodając licznik do nazwy bazowej (np. #1, #2)
-- Do każdego numerowanego kanału trafiają wyłącznie użytkownicy zdefiniowani dla tej konkretnej grupy w pliku JSON
+- Do każdego numerowanego kanału trafiają wyłącznie użytkownicy zdefiniowani dla
+  tej konkretnej grupy w pliku
 - Liczba utworzonych kanałów odpowiada liczbie obiektów w pliku konfiguracyjnym
 - Komunikat końcowy potwierdza pomyślne utworzenie wszystkich kanałów
-
-# TODO: WKLEIĆ OUTPUT
