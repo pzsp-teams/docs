@@ -63,6 +63,8 @@ Do wykonania projektu został wybrany język **Go**. Go posiada bardzo bogaty ek
 
 #### Pliki testowe
 
+# TODO: Wkleić rzeczywistą treść PLIKU
+
 **Plik: message.txt**
 
 ```
@@ -155,15 +157,19 @@ Wysłano: 3/3
 - Każdy kanał wymieniony w pliku `variables.json` otrzymuje spersonalizowaną wiadomość
 - Komunikat końcowy informuje o liczbie pomyślnie wysłanych wiadomości
 
+WYNIK:
+# TODO: WKLEIĆ OUTPUT
+
 ### Test Akceptacyjny: Pobieranie nieodczytanych wiadomości Teams
 
-**Scenariusz:** Pobranie nieodczytanych wiadomości użytkownika
+**Scenariusz:** Pobranie wiadomości użytkownika z podanego okresu czasu
 
 ---
 
 #### Kroki testowe
 
 ##### Krok 1: Wykonanie komendy
+# TODO Wkleić prawdziwą komende
 
 **Akcja użytkownika:**
 
@@ -183,7 +189,7 @@ teams-automation unread
 **Wyświetlony wynik:**
 
 ```
-Nieodczytane wiadomości:
+Wiadomości:
 
   Marketing Team > Ogólny
   Od: Jan Kowalski
@@ -195,7 +201,7 @@ Nieodczytane wiadomości:
   Data: 2025-11-27 10:15
   Treść: Merge request #234 czeka na review. Czy możesz sprawdzić?
 
-Pobrano: 2 nieodczytane wiadomości
+Pobrano: 2 wiadomości z podanego okresu
 ```
 
 ---
@@ -207,6 +213,8 @@ Pobrano: 2 nieodczytane wiadomości
 - System wyświetla treść wiadomości w formie
 - Komunikat końcowy potwierdza poprawne pobranie listy wiadomości
 
+# TODO: WKLEIĆ OUTPUT
+
 ### Test Akceptacyjny: Automatyczne tworzenie kanałów dla grup projektowych
 
 **Scenariusz:** Automatyczne generowanie numerowanych kanałów i przypisywanie do nich zdefiniowanych grup użytkowników
@@ -214,6 +222,7 @@ Pobrano: 2 nieodczytane wiadomości
 ---
 
 #### Pliki testowe
+# TODO WKLEIĆ rzeczywisty plik
 
 **Plik: groups_config.json**
 
@@ -306,3 +315,5 @@ Status: Operacja zakończona pomyślnie
 - Do każdego numerowanego kanału trafiają wyłącznie użytkownicy zdefiniowani dla tej konkretnej grupy w pliku JSON
 - Liczba utworzonych kanałów odpowiada liczbie obiektów w pliku konfiguracyjnym
 - Komunikat końcowy potwierdza pomyślne utworzenie wszystkich kanałów
+
+# TODO: WKLEIĆ OUTPUT
