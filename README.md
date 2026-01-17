@@ -2,19 +2,25 @@
 
 ## Repozytorium kodu z dostępem online
 
-Utworzona została organizacja w serwisie GitHub, w skład której wchodzą 2 repozytoria:
+Utworzona została organizacja w serwisie GitHub, w skład której wchodzą 3 repozytoria:
 
 - biblioteka ułatwiająca komunikację z API MS Teams [lib](https://github.com/pzsp-teams/lib)
+- binding biblioteki w pythonie [lib-python](https://github.com/pzsp-teams/lib-python)
 - aplikacja terminalowa prezentująca użycie biblioteki [cli](https://github.com/pzsp-teams/cli)
 
-## Pipeline CI/CD
+## Pipeline'y CI/CD
 
+**CI na lib**
 - **Lint** - statyczna analiza kodu przy pomocy golangci-lint
 - **Go Mod Tidy** - sprawdzenie, czy z plikach obsługujących pakiety nie ma nadmiarowych dependencji
 - **Test** - kiedy przejdą poprzednie sekcje, uruchamiane są testy jednostkowe
 - **Vulnerability Check** - analiza pod kątem znanych podatności
 
 ![CI pipeline](./CI.png)
+
+**Generowanie i publikowanie dokumentacji na lib oraz lib-python**
+- **Build Docs** - wygenerowanie dokumentacji przez MkDocs
+- **Publish** - deployment strony z dokumentacją
 
 ## Narzędzia formatowania i analizy statycznej
 
