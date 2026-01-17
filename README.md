@@ -16,15 +16,34 @@ Utworzona została organizacja w serwisie GitHub, w skład której wchodzą 3 re
 - **Test** - kiedy przejdą poprzednie sekcje, uruchamiane są testy jednostkowe
 - **Vulnerability Check** - analiza pod kątem znanych podatności
 
+Używane narzędzie to **golangci-lint**. Jego konfiguracja znajduje się w pliku *.golangci.yml*. CI uruchamia wiele różnych, zewnętrznych linterów (np. gocritic, gocyclo etc.) i na podstawie ich właściwości ocenia poprawności kodu. Do formatowania wykorzystane zostały wykorzystane narzędzia domyślna języka go - **gofmt** i **goimports**.
+
 ![CI pipeline](./CI.png)
 
 **Generowanie i publikowanie dokumentacji na lib oraz lib-python**
 - **Build Docs** - wygenerowanie dokumentacji przez MkDocs
-- **Publish** - deployment strony z dokumentacją
+- **Deploy to GitHub Pages** - deployment strony z dokumentacją
 
+![Docs pipeline](./docs.png)
+
+**Testy integracyjne w Pythonie**
+- **Build fake client** - kompiluje bridge Go z zamockowanym API Microsoft Teams
+- **Run Integration Tests** - odpala testy integracyjne
+- **Build real client** - kompilacja Go z prawdziwym API Microsoft Teams
+
+(te stage'e są odpalane po pushu na main w lib-go)
+- **Bump Version on Main** - aktualizacja wersji biblioteki w Go z której korzysta binding pythona
+- **Update release branch** - aktualizacja brancha python-release
+
+
+
+![Integration tests](./integration_tests.png)
 ## Narzędzia formatowania i analizy statycznej
 
-Używane narzędzie to **golangci-lint**. Jego konfiguracja znajduje się w pliku *.golangci.yml*. CI uruchamia wiele różnych, zewnętrznych linterów (np. gocritic, gocyclo etc.) i na podstawie ich właściwości ocenia poprawności kodu. Do formatowania wykorzystane zostały wykorzystane narzędzia domyślna języka go - **gofmt** i **goimports**.
+**Publikacja w PyPi**
+- **Upload release to PyPi** - wprowadzenie nowej wersji do PyPi
+
+![Publish](./publish.png)
 
 ## Metodyka tworzenia kodu
 
