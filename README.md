@@ -316,3 +316,5 @@ ______________________________________________________________________
   tej konkretnej grupy w pliku
 - Liczba utworzonych kanałów odpowiada liczbie obiektów w pliku konfiguracyjnym
 - Komunikat końcowy potwierdza pomyślne utworzenie wszystkich kanałów
+
+Wszystkie testy akceptacyjne zostały spełnione
