@@ -12,52 +12,6 @@ repozytoria:
 - aplikacja terminalowa prezentująca użycie biblioteki
   [cli](https://github.com/pzsp-teams/cli)
 
-## Pipeline'y CI/CD
-
-**CI na lib**
-
-- **Lint** - statyczna analiza kodu przy pomocy golangci-lint
-- **Go Mod Tidy** - sprawdzenie, czy z plikach obsługujących pakiety nie ma
-  nadmiarowych dependencji
-- **Test** - kiedy przejdą poprzednie sekcje, uruchamiane są testy jednostkowe
-- **Vulnerability Check** - analiza pod kątem znanych podatności
-
-Używane narzędzie to **golangci-lint**. Jego konfiguracja znajduje się w pliku
-*.golangci.yml*. CI uruchamia wiele różnych, zewnętrznych linterów (np.
-gocritic, gocyclo etc.) i na podstawie ich właściwości ocenia poprawności kodu.
-Do formatowania wykorzystane zostały wykorzystane narzędzia domyślna języka go -
-**gofmt** i **goimports**.
-
-![CI pipeline](./CI.png)
-
-**Generowanie i publikowanie dokumentacji na lib oraz lib-python**
-
-- **Build Docs** - wygenerowanie dokumentacji przez MkDocs
-- **Deploy to GitHub Pages** - deployment strony z dokumentacją
-
-![Docs pipeline](./docs.png)
-
-**Testy integracyjne w Pythonie**
-
-- **Build fake client** - kompiluje bridge Go z zamockowanym API Microsoft Teams
-- **Run Integration Tests** - odpala testy integracyjne
-- **Build real client** - kompilacja Go z prawdziwym API Microsoft Teams
-
-(te stage'e są odpalane po pushu na main w lib-go)
-
-- **Bump Version on Main** - aktualizacja wersji biblioteki w Go z której
-  korzysta binding pythona
-- **Update release branch** - aktualizacja brancha python-release
-
-![Integration tests](./integration_tests.png)
-
-## Narzędzia formatowania i analizy statycznej
-
-**Publikacja w PyPi**
-
-- **Upload release to PyPi** - wprowadzenie nowej wersji do PyPi
-
-![Publish](./publish.png)
 
 ## Metodyka tworzenia kodu
 
@@ -76,6 +30,61 @@ również korzystać gotowych rozwiązań Microsoftu takich jak MSAL (biblioteka
 autoryzacji) oraz MSGraphSDK. System do zarządzania dependencjami jest bardzo
 dobry i lepszy niż w językach typu Python. Innym kryterium wyboru była chęć
 nauczenia się nowego języka, który ma dobrą reputację.
+
+Jako ilustracja możliwości portowania biblioteki został wybrany język **Python**
+
+## Pipeline'y CI/CD
+
+**CI na lib**
+
+- **Lint** - statyczna analiza kodu przy pomocy golangci-lint
+- **Go Mod Tidy** - sprawdzenie, czy z plikach obsługujących pakiety nie ma
+  nadmiarowych dependencji
+- **Test** - kiedy przejdą poprzednie sekcje, uruchamiane są testy jednostkowe
+- **Vulnerability Check** - analiza pod kątem znanych podatności
+
+Używane narzędzie to **golangci-lint**. Jego konfiguracja znajduje się w pliku
+*.golangci.yml*. CI uruchamia wiele różnych, zewnętrznych linterów (np.
+gocritic, gocyclo etc.) i na podstawie ich właściwości ocenia poprawności kodu.
+Do formatowania wykorzystane zostały wykorzystane narzędzia domyślna języka go -
+**gofmt** i **goimports**.
+
+![CI pipeline](./potoki/CI.png)
+
+**Generowanie i publikowanie dokumentacji na lib oraz lib-python**
+
+- **Build Docs** - wygenerowanie dokumentacji przez MkDocs
+- **Deploy to GitHub Pages** - deployment strony z dokumentacją
+
+![Docs pipeline](./potoki/docs.png)
+
+**Powiadomienie o nowej wersji lib**
+
+Kiedy w głównym repozytorium biblioteki w Go znajdzie się nowa wersja, uruchamiany jest pipeline biblioteki w Pythonie.
+
+![Notify python](./potoki/notify_python.png)
+
+**Testy integracyjne w Pythonie**
+
+1. **Build fake client** - kompiluje bridge Go z zamockowanym API Microsoft Teams do testów
+2. **Run Integration Tests** - odpala testy integracyjne
+3. **Build real client** - kompilacja Go z prawdziwym API Microsoft Teams
+4. **Bump Version on Main** - aktualizacja numeru wersji biblioteki Python
+5. **Update release branch** - aktualizacja brancha python-release
+
+![Integration tests](./integration_tests.png)
+
+Scenariusze działania tego potoku:
+- **przy powiadomieniu z repozytorium Go** - wszystkie 5 stagów uruchamia się z nowo pobraną wersją biblioteki Go wskazaną w powiadomieniu.
+- **przy pull request** - uruchamiają się stage 1, 2, 3 w celu sprawdzenia, czy nowa wersja działa poprawnie.
+- **przy pushu na main** - testy zostały już przeprowadzone, więc uruchamiają się tylko stage 3, 4, 5, aby przygotować wersję do opublikowania.
+
+**Publikacja w PyPi**
+
+- **Upload release to PyPi** - wprowadzenie nowej wersji do PyPi (z brancha python-release)
+
+![Publish](./publish.png)
+
 
 ## Propozycje testów akceptacyjnych
 
