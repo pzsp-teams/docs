@@ -72,7 +72,7 @@ Kiedy w głównym repozytorium biblioteki w Go znajdzie się nowa wersja, urucha
 4. **Bump Version on Main** - aktualizacja numeru wersji biblioteki Python
 5. **Update release branch** - aktualizacja brancha python-release
 
-![Integration tests](./integration_tests.png)
+![Integration tests](./potoki/integration_tests.png)
 
 Scenariusze działania tego potoku:
 - **przy powiadomieniu z repozytorium Go** - wszystkie 5 stagów uruchamia się z nowo pobraną wersją biblioteki Go wskazaną w powiadomieniu.
@@ -83,7 +83,7 @@ Scenariusze działania tego potoku:
 
 - **Upload release to PyPi** - wprowadzenie nowej wersji do PyPi (z brancha python-release)
 
-![Publish](./publish.png)
+![Publish](./potoki/publish.png)
 
 
 ## Propozycje testów akceptacyjnych
